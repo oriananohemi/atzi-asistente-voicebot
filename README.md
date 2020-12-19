@@ -1,3 +1,7 @@
 # Atzi Asistente
 
-VoiceBot que te ayuda a encontrar eventos en tu ciudad, utilizando Google Dialogflow y compatible con Google Assistant. Creado siguiendo el curso de DialogFlow de Platzi
+Atzi te ayuda a encontrar eventos en tu ciudad. Entrenado en DialogFlow, compatible con Google Assitant. Creado siguiendo el curso de DialogFlow de Platzi
+
+## Flujo Conversacional Base
+<img src="https://github.com/oriananohemi/atzi-asistente-voicebot/blob/master/Atzi.png">
+
