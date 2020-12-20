@@ -11,7 +11,6 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest(
 
     function getCity(agent) {
       const agentParameters = agent.parameters.ciudad;
-      const
       if (cities.includes(agentParameters)) {
         agent.add(`Me encanta ${agentParameters}, te puedo ayudar a encontrar
         obras de teatro, festivales o eventos en línea.
@@ -24,34 +23,42 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest(
     }
 
     function tematic(agent) {
-      const ssml = `<speak>¡Genial!.Estos son los titulos que estaran disponibles los próximos días en tu ciudad:
-      ¿Cual te interesa?</speak>`;
-      let conv = agent.conv();
-      conv.ask(ssml);
-      agent.add(conv);
-      agent.add(
+      const ssml = `<speak>¡Super!.Estas son las funciones que estarán disponible en tu ciudad:
+      ${agent.add(
         tematics.forEach((tematic) =>
           agent.add(new Suggestion(tematic).join('<break time="300ms">'))
         )
-      );
+      )}
+      ¿Cuál te interesa?</speak>`;
+      let conv = agent.conv();
+      conv.ask(ssml);
+      agent.add(conv);
     }
 
     function tematicDeep(agent) {
       agent.add(`<speak>¡Genial!.Estos son los titulos que estaran disponibles los próximos días en tu ciudad:
-      ¿Cual te interesa?</speak>`);
+      ¿Cuál te interesa?</speak>`);
       agent.add(
         tematics.forEach((tematic) => agent.add(new Suggestion(tematic)))
       );
     }
 
     function detail(agent) {
-      agent.add(`Esta función se realizará en el ${info.place} el ${info.day} a
-    	las ${info.time}. ¿Deseas agendar? `);
+      agent.add(`Excelente elección. Esta función se realizará en el ${info.place}, el ${info.day}, a
+    las ${info.time}. ¿Deseas agendar? `);
     }
 
     function detailEvent(agent) {
       agent.add(`El sabado 23 de febrero tendremos un taller de pintura en el
     Centro Cultural`);
+    }
+
+    function findAnotherTime(agent) {
+      agent.add(`¿Deseas que busque en otro horario?`);
+    }
+
+    function chooseAmountOfTickets(agent) {
+      agent.add(`¿Cuántos boletos deseas?`);
     }
 
     function register(agent) {
@@ -74,11 +81,12 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest(
 
     let intentMap = new Map();
     intentMap.set("City", getCity);
-    intentMap.set("Live", detail);
-    intentMap.set("Talleres", tematic);
-    intentMap.set("Talleres - Deep Links", tematicDeep);
+    intentMap.set("Event Selection", detail);
+    intentMap.set("Event Selection - no", findAnotherTime);
+    intentMap.set("Events", tematic);
+    intentMap.set("Events - Deep Links", tematicDeep);
     intentMap.set("Seleccion de taller", detailEvent);
-    intentMap.set("Seleccion de taller-yes", register);
+    intentMap.set("Seleccion de taller-yes", chooseAmountOfTickets);
     agent.handleRequest(intentMap);
   }
 );
